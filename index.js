@@ -15,8 +15,7 @@ server.listen(port, hostname, () => {
 
 
 const TelegramBot = require('node-telegram-bot-api');
-
-const token = '6971012076:AAHcv5AtKH3CMbYdpy9Ly2nFOZTRkOeFXdU'; // Replace with your own bot token
+const token = process.env['TELEGRAM_BOT_TOKEN'];
 const bot = new TelegramBot(token, { polling: true });
 
 bot.on('message', (msg) => {
