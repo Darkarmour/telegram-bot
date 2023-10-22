@@ -15,6 +15,8 @@ bot.on('message', (msg) => {
 
     if (messageText === '/loki') {
         bot.sendMessage(chatId, 'Welcome to the Lokis bot!');
+        const mongoObj = new mongo();
+        mongoObj.testConnection();
     }
 
 
