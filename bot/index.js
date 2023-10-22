@@ -2,6 +2,8 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = process.env['TELEGRAM_BOT_TOKEN'];
 const bot = new TelegramBot(token, { polling: true });
 
+const mongo = require('./mongo');
+
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
     const messageText = msg.text;
