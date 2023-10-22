@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = process.env['TELEGRAM_BOT_TOKEN'];
 const bot = new TelegramBot(token, { polling: true });
 
-const mongo = require('./mongo');
+const MongoModel = require('../models/mongo');
 
 bot.on('message', (msg) => {
     const chatId = msg.chat.id;
@@ -15,7 +15,7 @@ bot.on('message', (msg) => {
 
     if (messageText === '/loki') {
         bot.sendMessage(chatId, 'Welcome to the Lokis bot!');
-        const mongoObj = new mongo();
+        const mongoObj = new MongoModel();
         mongoObj.testConnection();
     }
 
