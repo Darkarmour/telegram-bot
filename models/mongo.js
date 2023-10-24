@@ -10,27 +10,49 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-const MONGO_DB_MEDICAL = "Medical";
-const MONGO_COLLECTION_USERS = "Users";
 
-
+var dbObj = null;
 class MongoModel {
   constructor() {
   }
 
+  async getDbObj(db) {
+    if (!dbObj) {
+      console.log("Connecting", dbObj);
+      await client.connect();
+      dbObj = await client.db(db);
+      return dbObj;
+    }
+    else {
+      return dbObj;
+    }
+  }
+
   async testConnection() {
     try {
-      console.log("Pinging the mongo connection");
-      // Connect the client to the server	(optional starting in v4.7)
+      console.log(`TEST CONNECTION`);
       await client.connect();
-      // Send a ping to confirm a successful connection
       await client.db(MONGO_DB_MEDICAL).command({ ping: 1 });
-      console.log(`Pinged your deployment. You successfully connected to ${MONGO_DB_MEDICAL}  MongoDB!`);
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await client.close();
+    }
+    catch (error) {
+      console.log(`TEST CONNECTION - Error: ${JSON.stringify(error)}`);
+    }
+  }
+
+  async insertOne(db, collection, data) {
+    try {
+      console.log(`INSERT ONE - DB: ${db} - COLLECTION: ${collection} - Data: ${JSON.stringify(data)}`);
+      const dbObj = await this.getDbObj(db);
+      const response = await dbObj.collection(collection).insertOne(data);
+      console.log(`INSERT ONE RESPONSE - DB: ${db} - COLLECTION: ${collection} - Data: ${JSON.stringify(data)}`);
+      return response;
+    }
+    catch (error) {
+      console.log(`INSERT ONE - DB: ${db} - COLLECTION: ${collection} - Error: ${JSON.stringify(error)}`);
+      return Promise.reject(error);
     }
   }
 }
 
 module.exports = MongoModel;
+
