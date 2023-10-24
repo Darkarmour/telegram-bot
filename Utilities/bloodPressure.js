@@ -10,10 +10,9 @@ systole: Number
 created_at: Number
 
 module.exports = {
-    updateBP: ({ chatId, userName, date, messageText }) => {
+    updateBloodPressure: ({ chatId, userName, date, messageText }) => {
         try {
-            const msgTextSplits = messageText?.toUpperCase().split("BP=");
-            const bloodPressureSplits = msgTextSplits[1]?.split("/") ?? undefined;
+            const bloodPressureSplits = messageText?.split("/") ?? undefined;
             const systole = bloodPressureSplits?.[0];
             const diastole = bloodPressureSplits?.[1];
             if (diastole && systole) {
@@ -32,7 +31,7 @@ module.exports = {
 
         }
         catch (error) {
-            const errMsg = "UPDATE BP - Error: " + error;
+            const errMsg = "UPDATE BLOOD PRESSURE - Error: " + error;
             console.log(errMsg);
             return Promise.reject(errMsg)
         }
