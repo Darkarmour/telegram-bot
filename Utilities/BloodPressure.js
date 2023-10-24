@@ -12,20 +12,26 @@ created_at: Number
 module.exports = {
     updateBP: ({ chatId, userName, date, messageText }) => {
         try {
-            let msgTextSplits = messageText?.toUpperCase().split("BP-");
+            let msgTextSplits = messageText?.toUpperCase().split("BP=");
             let bloodPressureSplits = msgTextSplits[1]?.split("/") ?? undefined;
             let systole = bloodPressureSplits?.[0];
             let diastole = bloodPressureSplits?.[1];
-            let insertData = {
-                userName: userName,
-                chatId: chatId,
-                createdAt: date,
-                diastole: diastole,
-                systole: systole
-            };
-            return (new MongoModel()).insertOne(MONGO_DB_MEDICAL, MONGO_COLLECTION_BLOODPRESSURE, insertData)
+            if (diastole && systole) {
+                let insertData = {
+                    userName: userName,
+                    chatId: chatId,
+                    createdAt: date,
+                    diastole: diastole,
+                    systole: systole
+                };
+                return (new MongoModel()).insertOne(MONGO_DB_MEDICAL, MONGO_COLLECTION_BLOODPRESSURE, insertData)
+            }
+            else {
+                return Promise.reject("Diastole and Systole values are not provided.")
+            }
+
         }
-        catch(error) {
+        catch (error) {
             const errMsg = "UPDATE BP - Error: " + error;
             console.log(errMsg);
             return Promise.reject(errMsg)

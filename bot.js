@@ -12,13 +12,15 @@ bot.on('message', (msg) => {
     if (messageText == "/start") {
         bot.sendMessage(chatId, 'Welcome to JPs bot!');
     }
-    else if (messageText == "/updateBP") {
-        bot.sendMessage(chatId, "Provide the BP details in the format BP-[SYSTOLE VALUE]:[DIASTOLE VALUE] (Eg: BP-110/80)");
-    }
-    else if (messageText.toUpperCase().startsWith("BP-")) {
+    // else if (messageText == "/updateBP") {
+    //     bot.sendMessage(chatId, "Provide the BP details in the format BP-[SYSTOLE VALUE]:[DIASTOLE VALUE] (Eg: BP-110/80)");
+    // }
+    else if (messageText.toUpperCase().startsWith("BP=")) {
         BloodPressure.updateBP({ chatId, userName, date, messageText }).then((response) => {
-            bot.sendMessage(chatId, "Updated BP");
+            console.log("UPDATE BP - RESPONSE: ", JSON.stringify(response));
+            bot.sendMessage(chatId, "Updated BP!");
         }).catch((error) => {
+            console.log("UPDATE BP - ERROR: ", JSON.stringify(error));
             bot.sendMessage(chatId, "Error while updating BP, try again later!")
         })
     }
