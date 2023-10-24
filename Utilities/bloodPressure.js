@@ -1,9 +1,9 @@
 const MongoModel = require('../models/mongo');
 const MONGO_DB_MEDICAL = "Medical";
-const MONGO_COLLECTION_BLOODPRESSURE = "BloodPressure";
+const MONGO_COLLECTION_bloodPressure = "bloodPressure";
 
 // Interfaces
-// BloodPressure
+// bloodPressure
 userName: String
 diastole: Number
 systole: Number
@@ -12,19 +12,19 @@ created_at: Number
 module.exports = {
     updateBP: ({ chatId, userName, date, messageText }) => {
         try {
-            let msgTextSplits = messageText?.toUpperCase().split("BP=");
-            let bloodPressureSplits = msgTextSplits[1]?.split("/") ?? undefined;
-            let systole = bloodPressureSplits?.[0];
-            let diastole = bloodPressureSplits?.[1];
+            const msgTextSplits = messageText?.toUpperCase().split("BP=");
+            const bloodPressureSplits = msgTextSplits[1]?.split("/") ?? undefined;
+            const systole = bloodPressureSplits?.[0];
+            const diastole = bloodPressureSplits?.[1];
             if (diastole && systole) {
-                let insertData = {
+                const insertData = {
                     userName: userName,
                     chatId: chatId,
                     createdAt: date,
-                    diastole: diastole,
-                    systole: systole
+                    diastole: Number(diastole),
+                    systole: Number(systole)
                 };
-                return (new MongoModel()).insertOne(MONGO_DB_MEDICAL, MONGO_COLLECTION_BLOODPRESSURE, insertData)
+                return (new MongoModel()).insertOne(MONGO_DB_MEDICAL, MONGO_COLLECTION_bloodPressure, insertData)
             }
             else {
                 return Promise.reject("Diastole and Systole values are not provided.")

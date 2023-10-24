@@ -1,5 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
-const BloodPressure = require('./Utilities/BloodPressure');
+const bloodPressure = require('./Utilities/bloodPressure');
 const token = process.env['TELEGRAM_BOT_TOKEN'];
 const bot = new TelegramBot(token, { polling: true });
 
@@ -16,7 +16,7 @@ bot.on('message', (msg) => {
     //     bot.sendMessage(chatId, "Provide the BP details in the format BP-[SYSTOLE VALUE]:[DIASTOLE VALUE] (Eg: BP-110/80)");
     // }
     else if (messageText.toUpperCase().startsWith("BP=")) {
-        BloodPressure.updateBP({ chatId, userName, date, messageText }).then((response) => {
+        bloodPressure.updateBP({ chatId, userName, date, messageText }).then((response) => {
             console.log("UPDATE BP - RESPONSE: ", JSON.stringify(response));
             bot.sendMessage(chatId, "Updated BP!");
         }).catch((error) => {
