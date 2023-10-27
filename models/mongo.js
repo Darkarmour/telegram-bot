@@ -44,11 +44,25 @@ class MongoModel {
       console.log(`INSERT ONE - DB: ${db} - COLLECTION: ${collection} - Data: ${JSON.stringify(data)}`);
       const dbObj = await this.getDbObj(db);
       const response = await dbObj.collection(collection).insertOne(data);
-      console.log(`INSERT ONE RESPONSE - DB: ${db} - COLLECTION: ${collection} - Data: ${JSON.stringify(data)}`);
+      console.log(`INSERT ONE RESPONSE - DB: ${db} - COLLECTION: ${collection} - Response: ${JSON.stringify(response)}`);
       return response;
     }
     catch (error) {
       console.log(`INSERT ONE - DB: ${db} - COLLECTION: ${collection} - Error: ${JSON.stringify(error)}`);
+      return Promise.reject(error);
+    }
+  }
+
+  async find(db, collection, options = {}) {
+    try {
+      console.log(`FIND - DB: ${db} - COLLECTION: ${collection} - Options: ${JSON.stringify(options)}`);
+      const dbObj = await this.getDbObj(db);
+      const response = await dbObj.collection(collection).find(options.query || {}, { projection: options.projection || {} }).toArray();
+      console.log(`FIND RESPONSE - DB: ${db} - COLLECTION: ${collection} - Response: ${JSON.stringify(response)}`);
+      return response;
+    }
+    catch (error) {
+      console.log(`FIND - DB: ${db} - COLLECTION: ${collection} - Error: ${JSON.stringify(error)}`);
       return Promise.reject(error);
     }
   }
